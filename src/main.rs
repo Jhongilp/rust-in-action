@@ -37,18 +37,18 @@ fn check_status(sat_id: CubeSat) -> StatusMessage {
 }
 
 fn main() {
-    let sat_a = CubeSat { id: 0 };
-    let sat_b = CubeSat { id: 2 };
-    let sat_c = CubeSat { id: 3 };
+    let base = GroundStation {};
+    let mut sat_a = CubeSat {
+        id: 0,
+        mailbox: Mailbox { messages: vec![] },
+    };
 
-    let a_status = check_status(sat_a);
-    let b_status = check_status(sat_b);
-    let c_status = check_status(sat_c);
-    println!("a: {:?}, b: {:?}, c: {:?}", a_status, b_status, c_status);
+    println!("t0: {:?}", sat_a);
 
-    // waiting ....
-    let a_status = check_status(sat_a);
-    let b_status = check_status(sat_b);
-    let c_status = check_status(sat_c);
-    println!("a: {:?}, b: {:?}, c: {:?}", a_status, b_status, c_status);
+    base.send(&mut sat_a, Message::from("hello threre!"));
+    println!("t1: {:?}", sat_a);
+
+    let msg = sat_a.recv();
+    println!("t2: {:?}", sat_a);
+    println!("msg: {:?}", msg);
 }
